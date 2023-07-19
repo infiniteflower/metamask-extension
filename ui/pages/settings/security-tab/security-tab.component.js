@@ -47,6 +47,8 @@ export default class SecurityTab extends PureComponent {
     setShowIncomingTransactionsFeatureFlag: PropTypes.func.isRequired,
     setUsePhishDetect: PropTypes.func.isRequired,
     usePhishDetect: PropTypes.bool.isRequired,
+    setUse4ByteResolution: PropTypes.func.isRequired,
+    use4ByteResolution: PropTypes.bool.isRequired,
     useTokenDetection: PropTypes.bool.isRequired,
     setUseTokenDetection: PropTypes.func.isRequired,
     setIpfsGateway: PropTypes.func.isRequired,
@@ -221,6 +223,34 @@ export default class SecurityTab extends PureComponent {
             <ToggleButton
               value={usePhishDetect}
               onToggle={(value) => setUsePhishDetect(!value)}
+              offLabel={t('off')}
+              onLabel={t('on')}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderUse4ByteResolutionToggle() {
+    const { t } = this.context;
+    const { use4ByteResolution, setUse4ByteResolution } = this.props;
+    return (
+      <div ref={this.settingsRefs[9]} className="settings-page__content-row">
+        <div className="settings-page__content-item">
+          <span>{t('use4ByteResolution')}</span>
+          <div className="settings-page__content-description">
+            {t('use4ByteResolutionDescription')}
+          </div>
+        </div>
+        <div className="settings-page__content-item">
+          <div
+            className="settings-page__content-item-col"
+            data-testid="use4ByteResolution"
+          >
+            <ToggleButton
+              value={use4ByteResolution}
+              onToggle={(value) => setUse4ByteResolution(!value)}
               offLabel={t('off')}
               onLabel={t('on')}
             />
@@ -529,12 +559,21 @@ export default class SecurityTab extends PureComponent {
           {this.context.t('privacy')}
         </span>
         <div>
-          <span className="settings-page__security-tab-sub-header">Alerts</span>
+          <span className="settings-page__security-tab-sub-header">
+            {this.context.t('alerts')}
+          </span>
         </div>
         <div className="settings-page__content-padded">
           {this.renderPhishingDetectionToggle()}
         </div>
-
+        <div>
+          <span className="settings-page__security-tab-sub-header">
+            {this.context.t('smartContracts')}
+          </span>
+        </div>
+        <div className="settings-page__content-padded">
+          {this.renderUse4ByteResolutionToggle()}
+        </div>
         <span className="settings-page__security-tab-sub-header">
           {this.context.t('transactions')}
         </span>
