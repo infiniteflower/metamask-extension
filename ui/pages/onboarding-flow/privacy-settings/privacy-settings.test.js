@@ -21,6 +21,7 @@ describe('Privacy Settings Onboarding View', () => {
   const store = configureMockStore([thunk])(mockStore);
   const setFeatureFlagStub = jest.fn();
   const setUsePhishDetectStub = jest.fn();
+  const setUse4ByteResolutionStub = jest.fn();
   const setUseTokenDetectionStub = jest.fn();
   const setUseCurrencyRateCheckStub = jest.fn();
   const setIpfsGatewayStub = jest.fn();
@@ -32,6 +33,7 @@ describe('Privacy Settings Onboarding View', () => {
   setBackgroundConnection({
     setFeatureFlag: setFeatureFlagStub,
     setUsePhishDetect: setUsePhishDetectStub,
+    setUse4ByteResolution: setUse4ByteResolutionStub,
     setUseTokenDetection: setUseTokenDetectionStub,
     setUseCurrencyRateCheck: setUseCurrencyRateCheckStub,
     setIpfsGateway: setIpfsGatewayStub,
@@ -47,6 +49,7 @@ describe('Privacy Settings Onboarding View', () => {
     // All settings are initialized toggled to true
     expect(setFeatureFlagStub).toHaveBeenCalledTimes(0);
     expect(setUsePhishDetectStub).toHaveBeenCalledTimes(0);
+    expect(setUse4ByteResolutionStub).toHaveBeenCalledTimes(0);
     expect(setUseTokenDetectionStub).toHaveBeenCalledTimes(0);
     expect(setUseMultiAccountBalanceCheckerStub).toHaveBeenCalledTimes(0);
     expect(setUseCurrencyRateCheckStub).toHaveBeenCalledTimes(0);
@@ -60,16 +63,19 @@ describe('Privacy Settings Onboarding View', () => {
     fireEvent.click(toggles[2]);
     fireEvent.click(toggles[3]);
     fireEvent.click(toggles[4]);
+    fireEvent.click(toggles[5]);
     fireEvent.click(submitButton);
 
     expect(setFeatureFlagStub).toHaveBeenCalledTimes(1);
     expect(setUsePhishDetectStub).toHaveBeenCalledTimes(1);
+    expect(setUse4ByteResolutionStub).toHaveBeenCalledTimes(1);
     expect(setUseTokenDetectionStub).toHaveBeenCalledTimes(1);
     expect(setUseMultiAccountBalanceCheckerStub).toHaveBeenCalledTimes(1);
     expect(setUseCurrencyRateCheckStub).toHaveBeenCalledTimes(1);
 
     expect(setFeatureFlagStub.mock.calls[0][1]).toStrictEqual(false);
     expect(setUsePhishDetectStub.mock.calls[0][0]).toStrictEqual(false);
+    expect(setUse4ByteResolutionStub.mock.calls[0][0]).toStrictEqual(false);
     expect(setUseTokenDetectionStub.mock.calls[0][0]).toStrictEqual(false);
     expect(setUseMultiAccountBalanceCheckerStub.mock.calls[0][0]).toStrictEqual(
       false,
@@ -82,9 +88,11 @@ describe('Privacy Settings Onboarding View', () => {
     fireEvent.click(toggles[2]);
     fireEvent.click(toggles[3]);
     fireEvent.click(toggles[4]);
+    fireEvent.click(toggles[5]);
     fireEvent.click(submitButton);
     expect(setFeatureFlagStub).toHaveBeenCalledTimes(2);
     expect(setUsePhishDetectStub).toHaveBeenCalledTimes(2);
+    expect(setUse4ByteResolutionStub).toHaveBeenCalledTimes(2);
     expect(setUseTokenDetectionStub).toHaveBeenCalledTimes(2);
     expect(setUseMultiAccountBalanceCheckerStub).toHaveBeenCalledTimes(2);
     expect(setUseCurrencyRateCheckStub).toHaveBeenCalledTimes(2);
