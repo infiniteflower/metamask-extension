@@ -1034,7 +1034,7 @@ export default function ReviewQuote({ setReceiveToAmount }) {
                         onClick={() => openBuyCryptoInPdapp()}
                         size={Size.inherit}
                       >
-                        Buy more {nativeCurrencySymbol}
+                        {t('buyAsset', [nativeCurrencySymbol])}
                       </ButtonLink>
                     )}
                   </Text>
