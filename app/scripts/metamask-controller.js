@@ -1212,9 +1212,7 @@ export default class MetamaskController extends EventEmitter {
       getAccountType: this.getAccountType.bind(this),
       getDeviceModel: this.getDeviceModel.bind(this),
       getTokenStandardAndDetails: this.getTokenStandardAndDetails.bind(this),
-      ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
       securityProviderRequest: this.securityProviderRequest.bind(this),
-      ///: END:ONLY_INCLUDE_IN
 
       ///: BEGIN:ONLY_INCLUDE_IN(build-mmi)
       transactionUpdateController: this.transactionUpdateController,
@@ -4732,8 +4730,10 @@ export default class MetamaskController extends EventEmitter {
     }
   };
 
-  ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
-  async securityProviderRequest(requestData, methodName) {
+  // We can't code-fence the whole method as some controllers rely on the method. But we can return null
+  // if build is flask
+  async securityProviderRequest(_requestData, _methodName) {
+    ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
     const { currentLocale, transactionSecurityCheckEnabled } =
       this.preferencesController.store.getState();
 
@@ -4744,8 +4744,8 @@ export default class MetamaskController extends EventEmitter {
 
       try {
         const securityProviderResponse = await securityProviderCheck(
-          requestData,
-          methodName,
+          _requestData,
+          _methodName,
           chainId,
           currentLocale,
         );
@@ -4756,8 +4756,7 @@ export default class MetamaskController extends EventEmitter {
         throw err;
       }
     }
-
+    ///: END:ONLY_INCLUDE_IN
     return null;
   }
-  ///: END:ONLY_INCLUDE_IN
 }
