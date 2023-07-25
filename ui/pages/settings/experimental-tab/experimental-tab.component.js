@@ -6,15 +6,21 @@ import {
   handleSettingsRefs,
 } from '../../../helpers/utils/settings-search';
 import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
+///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
 import Typography from '../../../components/ui/typography/typography';
+///: END:ONLY_INCLUDE_IN
 import { Text } from '../../../components/component-library';
 import {
+  ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
   FONT_WEIGHT,
+  ///: END:ONLY_INCLUDE_IN
   TextColor,
   ///: BEGIN:ONLY_INCLUDE_IN(blockaid)
   TextVariant,
   ///: END:ONLY_INCLUDE_IN
+  ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
   TypographyVariant,
+  ///: END:ONLY_INCLUDE_IN
 } from '../../../helpers/constants/design-system';
 ///: BEGIN:ONLY_INCLUDE_IN(desktop)
 import DesktopEnableButton from '../../../components/app/desktop-enable-button';
