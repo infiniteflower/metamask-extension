@@ -723,6 +723,18 @@ export default class MetaMetricsController {
         : null;
     ///: END:ONLY_INCLUDE_IN
     const { traits, previousUserTraits } = this.store.getState();
+
+    const securityProviders = [];
+    if (metamaskState.securityAlertsEnabled) {
+      securityProviders.push('blockaid');
+    }
+
+    ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
+    if (metamaskState.transactionSecurityCheckEnabled) {
+      securityProviders.push('opensea');
+    }
+    ///: END:ONLY_INCLUDE_IN
+
     /** @type {MetaMetricsTraits} */
     const currentTraits = {
       [MetaMetricsUserTrait.AddressBookEntries]: sum(
@@ -766,8 +778,7 @@ export default class MetaMetricsController {
       [MetaMetricsUserTrait.MmiAccountAddress]: mmiAccountAddress,
       [MetaMetricsUserTrait.MmiIsCustodian]: Boolean(mmiAccountAddress),
       ///: END:ONLY_INCLUDE_IN
-      [MetaMetricsUserTrait.SecurityProviders]:
-        metamaskState.transactionSecurityCheckEnabled ? ['opensea'] : [],
+      [MetaMetricsUserTrait.SecurityProviders]: securityProviders,
     };
 
     if (!previousUserTraits) {

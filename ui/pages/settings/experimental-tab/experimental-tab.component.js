@@ -31,8 +31,12 @@ export default class ExperimentalTab extends PureComponent {
     setUseNftDetection: PropTypes.func,
     setOpenSeaEnabled: PropTypes.func,
     openSeaEnabled: PropTypes.bool,
+
+    ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
     transactionSecurityCheckEnabled: PropTypes.bool,
     setTransactionSecurityCheckEnabled: PropTypes.func,
+    ///: END:ONLY_INCLUDE_IN
+
     ///: BEGIN:ONLY_INCLUDE_IN(blockaid)
     securityAlertsEnabled: PropTypes.bool,
     setSecurityAlertsEnabled: PropTypes.func,
@@ -229,6 +233,7 @@ export default class ExperimentalTab extends PureComponent {
     );
   }
 
+  ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
   renderTransactionSecurityCheckToggle() {
     const { t } = this.context;
 
@@ -322,6 +327,7 @@ export default class ExperimentalTab extends PureComponent {
       </>
     );
   }
+  ///: END:ONLY_INCLUDE_IN
 
   ///: BEGIN:ONLY_INCLUDE_IN(desktop)
   renderDesktopEnableButton() {
@@ -354,7 +360,11 @@ export default class ExperimentalTab extends PureComponent {
           this.renderSecurityAlertsToggle()
           ///: END:ONLY_INCLUDE_IN
         }
-        {this.renderTransactionSecurityCheckToggle()}
+        {
+          ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
+          this.renderTransactionSecurityCheckToggle()
+          ///: END:ONLY_INCLUDE_IN
+        }
         {this.renderOpenSeaEnabledToggle()}
         {
           ///: BEGIN:ONLY_INCLUDE_IN(desktop)
