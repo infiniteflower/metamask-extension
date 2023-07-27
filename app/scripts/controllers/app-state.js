@@ -1,8 +1,5 @@
 import EventEmitter from 'events';
 import { ObservableStore } from '@metamask/obs-store';
-import { v4 as uuid } from 'uuid';
-import log from 'loglevel';
-import { ApprovalType } from '@metamask/controller-utils';
 import { METAMASK_CONTROLLER_EVENTS } from '../metamask-controller';
 import { MINUTE } from '../../../shared/constants/time';
 import { AUTO_LOCK_TIMEOUT_ALARM } from '../../../shared/constants/alarms';
@@ -11,7 +8,6 @@ import { isBeta } from '../../../ui/helpers/utils/build-types';
 import {
   ENVIRONMENT_TYPE_BACKGROUND,
   POLLING_TOKEN_ENVIRONMENT_TYPES,
-  ORIGIN_METAMASK,
 } from '../../../shared/constants/app';
 import { DEFAULT_AUTO_LOCK_TIME_LIMIT } from '../../../shared/constants/preferences';
 
@@ -25,9 +21,9 @@ export default class AppStateController extends EventEmitter {
       isUnlocked,
       initState,
       onInactiveTimeout,
+      showUnlockRequest,
       preferencesStore,
       qrHardwareStore,
-      messenger,
     } = opts;
     super();
 
@@ -65,6 +61,8 @@ export default class AppStateController extends EventEmitter {
     this.waitingForUnlock = [];
     addUnlockListener(this.handleUnlock.bind(this));
 
+    this._showUnlockRequest = showUnlockRequest;
+
     preferencesStore.subscribe(({ preferences }) => {
       const currentState = this.store.getState();
       if (currentState.timeoutMinutes !== preferences.autoLockTimeLimit) {
@@ -78,9 +76,6 @@ export default class AppStateController extends EventEmitter {
 
     const { preferences } = preferencesStore.getState();
     this._setInactiveTimeout(preferences.autoLockTimeLimit);
-
-    this.messagingSystem = messenger;
-    this._approvalRequestId = null;
   }
 
   /**
@@ -115,7 +110,7 @@ export default class AppStateController extends EventEmitter {
     this.waitingForUnlock.push({ resolve });
     this.emit(METAMASK_CONTROLLER_EVENTS.UPDATE_BADGE);
     if (shouldShowUnlockRequest) {
-      this._requestApproval();
+      // this._showUnlockRequest();
     }
   }
 
@@ -129,8 +124,6 @@ export default class AppStateController extends EventEmitter {
       }
       this.emit(METAMASK_CONTROLLER_EVENTS.UPDATE_BADGE);
     }
-
-    this._acceptApproval();
   }
 
   /**
@@ -430,39 +423,5 @@ export default class AppStateController extends EventEmitter {
     this.store.updateState({
       serviceWorkerLastActiveTime,
     });
-  }
-
-  _requestApproval() {
-    this._approvalRequestId = uuid();
-
-    this.messagingSystem
-      .call(
-        'ApprovalController:addRequest',
-        {
-          id: this._approvalRequestId,
-          origin: ORIGIN_METAMASK,
-          type: ApprovalType.Unlock,
-        },
-        true,
-      )
-      .catch(() => {
-        // Intentionally ignored as promise not currently used
-      });
-  }
-
-  _acceptApproval() {
-    if (!this._approvalRequestId) {
-      return;
-    }
-    try {
-      this.messagingSystem.call(
-        'ApprovalController:acceptRequest',
-        this._approvalRequestId,
-      );
-    } catch (error) {
-      log.error('Failed to accept approval request', error);
-    }
-
-    this._approvalRequestId = null;
   }
 }

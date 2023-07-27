@@ -1,8 +1,5 @@
 import { ObservableStore } from '@metamask/obs-store';
-import { ORIGIN_METAMASK } from '../../../shared/constants/app';
 import AppStateController from './app-state';
-
-jest.mock('loglevel');
 
 let appStateController, mockStore;
 
@@ -102,58 +99,6 @@ describe('AppStateController', () => {
       const resolveFn = jest.fn();
       appStateController.waitForUnlock(resolveFn, false);
       expect(emitSpy).toHaveBeenCalledWith('updateBadge');
-      expect(appStateController.messagingSystem.call).toHaveBeenCalledTimes(0);
-    });
-
-    it('creates approval request when waitForUnlock is called with shouldShowUnlockRequest as true', async () => {
-      jest.spyOn(appStateController, 'isUnlocked').mockReturnValue(false);
-
-      const resolveFn = jest.fn();
-      appStateController.waitForUnlock(resolveFn, true);
-
-      expect(appStateController.messagingSystem.call).toHaveBeenCalledTimes(1);
-      expect(appStateController.messagingSystem.call).toHaveBeenCalledWith(
-        'ApprovalController:addRequest',
-        expect.objectContaining({
-          id: expect.any(String),
-          origin: ORIGIN_METAMASK,
-          type: 'unlock',
-        }),
-        true,
-      );
-    });
-  });
-
-  describe('handleUnlock', () => {
-    beforeEach(() => {
-      jest.spyOn(appStateController, 'isUnlocked').mockReturnValue(false);
-    });
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-    it('accepts approval request revolving all the related promises', async () => {
-      const emitSpy = jest.spyOn(appStateController, 'emit');
-      const resolveFn = jest.fn();
-      appStateController.waitForUnlock(resolveFn, true);
-
-      appStateController.handleUnlock();
-
-      expect(emitSpy).toHaveBeenCalled();
-      expect(emitSpy).toHaveBeenCalledWith('updateBadge');
-      expect(appStateController.messagingSystem.call).toHaveBeenCalled();
-      expect(appStateController.messagingSystem.call).toHaveBeenCalledWith(
-        'ApprovalController:acceptRequest',
-        expect.any(String),
-      );
-    });
-
-    it('returns without call messenger if no approval request in pending', async () => {
-      const emitSpy = jest.spyOn(appStateController, 'emit');
-
-      appStateController.handleUnlock();
-
-      expect(emitSpy).toHaveBeenCalledTimes(0);
-      expect(appStateController.messagingSystem.call).toHaveBeenCalledTimes(0);
     });
   });
 
