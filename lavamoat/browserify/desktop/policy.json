@@ -2257,7 +2257,6 @@
         "@metamask/key-tree": true,
         "@metamask/key-tree>@noble/hashes": true,
         "@metamask/key-tree>@scure/base": true,
-        "@metamask/snaps-controllers-flask>@metamask/snaps-utils>semver": true,
         "@metamask/snaps-controllers-flask>@metamask/utils": true,
         "@metamask/snaps-utils-flask>is-svg": true,
         "@metamask/snaps-utils>cron-parser": true,
@@ -2268,16 +2267,8 @@
         "browserify>path-browserify": true,
         "browserify>process": true,
         "chalk": true,
+        "semver": true,
         "superstruct": true
-      }
-    },
-    "@metamask/snaps-controllers-flask>@metamask/snaps-utils>semver": {
-      "globals": {
-        "console.error": true
-      },
-      "packages": {
-        "browserify>process": true,
-        "semver>lru-cache": true
       }
     },
     "@metamask/snaps-controllers-flask>@metamask/utils": {
@@ -2479,7 +2470,6 @@
         "@metamask/key-tree>@scure/base": true,
         "@metamask/snaps-utils-flask>@metamask/utils": true,
         "@metamask/snaps-utils-flask>is-svg": true,
-        "@metamask/snaps-utils-flask>semver": true,
         "@metamask/snaps-utils>cron-parser": true,
         "@metamask/snaps-utils>fast-json-stable-stringify": true,
         "@metamask/snaps-utils>rfdc": true,
@@ -2488,6 +2478,7 @@
         "browserify>path-browserify": true,
         "browserify>process": true,
         "chalk": true,
+        "semver": true,
         "superstruct": true
       }
     },
@@ -2498,20 +2489,10 @@
       },
       "packages": {
         "@metamask/key-tree>@noble/hashes": true,
-        "@metamask/snaps-utils-flask>@metamask/utils>semver": true,
         "browserify>buffer": true,
         "nock>debug": true,
+        "semver": true,
         "superstruct": true
-      }
-    },
-    "@metamask/snaps-utils-flask>@metamask/utils>semver": {
-      "globals": {
-        "console.error": true
-      },
-      "packages": {
-        "browserify>process": true,
-        "browserify>util": true,
-        "semver>lru-cache": true
       }
     },
     "@metamask/snaps-utils-flask>is-svg": {
@@ -2526,15 +2507,6 @@
       },
       "packages": {
         "@metamask/snaps-utils-flask>is-svg>fast-xml-parser>strnum": true
-      }
-    },
-    "@metamask/snaps-utils-flask>semver": {
-      "globals": {
-        "console.error": true
-      },
-      "packages": {
-        "browserify>process": true,
-        "semver>lru-cache": true
       }
     },
     "@metamask/snaps-utils>@metamask/snaps-registry": {
@@ -5272,7 +5244,6 @@
       },
       "packages": {
         "browserify>process": true,
-        "browserify>util": true,
         "semver>lru-cache": true
       }
     },
