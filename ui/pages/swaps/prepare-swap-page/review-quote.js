@@ -113,8 +113,13 @@ import {
   FRACTIONS,
   TEXT_ALIGN,
   Size,
+  Severity,
 } from '../../../helpers/constants/design-system';
-import { ButtonLink, Text } from '../../../components/component-library';
+import {
+  ButtonLink,
+  Text,
+  BannerAlert,
+} from '../../../components/component-library';
 import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
 import { isEqualCaseInsensitive } from '../../../../shared/modules/string-utils';
 import { parseStandardTokenTransactionData } from '../../../../shared/modules/transaction.utils';
@@ -131,7 +136,6 @@ import ExchangeRateDisplay from '../exchange-rate-display';
 import InfoTooltip from '../../../components/ui/info-tooltip';
 import useRamps from '../../../hooks/experiences/useRamps';
 import ViewQuotePriceDifference from './view-quote-price-difference';
-import NotEnoughBalance from './not-enough-balance';
 
 let intervalId;
 
@@ -1011,15 +1015,23 @@ export default function ReviewQuote({ setReceiveToAmount }) {
           <>
             {viewQuotePriceDifferenceWarning}
             {(showInsufficientWarning || tokenBalanceUnavailable) && (
-              <Box display={DISPLAY.FLEX} marginTop={2}>
-                <NotEnoughBalance
-                  title={t('notEnoughBalance')}
-                  actionableBalanceErrorMessage={actionableBalanceErrorMessage}
-                  needsMoreGas={needsMoreGas}
-                  openBuyCryptoInPdapp={openBuyCryptoInPdapp}
-                  needsMoreGasText={t('buyMoreAsset', [nativeCurrencySymbol])}
-                />
-              </Box>
+              <BannerAlert
+                title={t('notEnoughBalance')}
+                severity={Severity.Info}
+                description={actionableBalanceErrorMessage}
+                descriptionProps={{
+                  'data-testid': 'mm-banner-alert-notification-text',
+                }}
+                actionButtonLabel={
+                  needsMoreGas
+                    ? t('buyMoreAsset', [nativeCurrencySymbol])
+                    : undefined
+                }
+                actionButtonOnClick={
+                  needsMoreGas ? () => openBuyCryptoInPdapp() : undefined
+                }
+                marginTop={2}
+              />
             )}
           </>
         )}
