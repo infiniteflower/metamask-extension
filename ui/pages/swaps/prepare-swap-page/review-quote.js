@@ -139,6 +139,7 @@ import ExchangeRateDisplay from '../exchange-rate-display';
 import InfoTooltip from '../../../components/ui/info-tooltip';
 import useRamps from '../../../hooks/experiences/useRamps';
 import ViewQuotePriceDifference from './view-quote-price-difference';
+import { ZERO_ADDRESS } from '@truffle/codec/dist/lib/evm/utils';
 
 let intervalId;
 
@@ -787,11 +788,16 @@ export default function ReviewQuote({ setReceiveToAmount }) {
 
   const needsMoreGas = Boolean(ethBalanceNeededStx || ethBalanceNeeded);
 
+  // If source token is gas token, then use ethBalanceStx or ethBalanceNeeded, o/w use tokenBalanceNeeded
+  const isSourceNativeToken = fetchParams.sourceToken === ZERO_ADDRESS;
+
   const actionableBalanceErrorMessage = tokenBalanceUnavailable
     ? t('swapTokenBalanceUnavailable', [sourceTokenSymbol])
     : t('swapApproveNeedMoreTokens', [
         <span key="swapApproveNeedMoreTokens-1">
-          {tokenBalanceNeeded || ethBalanceNeededStx || ethBalanceNeeded}
+          {isSourceNativeToken
+            ? ethBalanceNeededStx || ethBalanceNeeded
+            : tokenBalanceNeeded || ethBalanceNeededStx || ethBalanceNeeded}
         </span>,
         tokenBalanceNeeded && !(sourceTokenSymbol === defaultSwapsToken.symbol)
           ? sourceTokenSymbol
